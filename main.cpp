@@ -2,96 +2,117 @@
 #include <string>
 #include <iostream>
 #include <unistd.h>
+#include <fstream>
+#include "state.h"
+#include "screen.h"
+#include "json.hpp"
+#include "main.h"
 using namespace std;
+using json = nlohmann::json;
 
-int type_text (WINDOW * window, string text) {
-	
-	int max_x, max_y;
-	getmaxyx(window, max_y, max_x);
 
-	int x, y = 1;
 
-	for(int i = 0; i < text.length(); i++) {
-		string s(1, text[i]);
-		string space = " ";
-		if (x > max_x - 20 && !s.compare(space)) {
-			y++;
-			x = 0;
+int main () {
+
+	/**State state;
+	Screen screen;
+
+	screen.initialize();
+	screen.create_text_window();
+	screen.create_choice_window();
+
+	screen_loop(screen, state);
+
+	json j2 = 1;*/
+
+	fill_states();
+
+	return 0;
+
+
+};
+
+int screen_loop (Screen screen, State state) {
+
+	while (1) {
+
+		screen.update_text(state.get_text());
+		
+		if (state.check_if_request()) {
+			screen.request_data(state.get_request());
 		} else {
-			x++; 		
-			mvwprintw(window, y, x, s.c_str());
-  			wrefresh(window);
-			usleep(30000);
+			screen.update_choices(state.get_num_choices(), state.get_choices());
+		}
+
+	}
+
+};
+
+
+void fill_states(void) {
+
+	std::ifstream ifs("data.json");
+	json j = json::parse(ifs);	
+	ifs.close();
+
+	State * statelist = new State[j["statelist"].size() + 1];
+
+	for (int x = 0; x < j["statelist"].size(); x++) {
+
+		json item = j["statelist"][x];
+
+		int state_num = item["state"];
+		State state = *(new State);
+		statelist[x] = state;
+
+		string text = item["text"];
+		string type = item["type"];
+		bool is_request = item["is_request"].get<bool>();
+		string request = "";
+		int num_choices = 1;
+		string * choices = NULL;
+
+		if (is_request == true) {
+			string request = item["request"];
+		} else {
+			choices = json_to_str_list(item["choices"]);
+			num_choices = item["choices"].size();
+		}
+
+		int  * next_states = json_to_int_list(item["next_states"]);
+
+		state.create(type, text, request, num_choices, choices, next_states, is_request);
+
+		int value = state.get_next_state(0);
+		if (value) {
+			//std::cout << *(value) << "\n";
 		}
 	}
-}
+
+	
+};
 
 
-int main() {
 
-  initscr();
-  noecho();
-  cbreak();
-  curs_set(0);
+int * json_to_int_list (json j) {
 
-  int x_max, y_max;
-  getmaxyx(stdscr, y_max, x_max);
+	int * final_list = new int[j.size()];
 
-  WINDOW * text_win = newwin(2*y_max/3 - 3, x_max - 10, 2, 5);
-  box(text_win, 0, 0);
-  refresh();
-  wrefresh(text_win);
+	int i = 0;
+	for (auto &item : j) {
+		*(final_list + i) = item.get<int>();
+		//std::cout << *(final_list + i);
+	}
 
+};
 
-  WINDOW * choice_win = newwin(y_max/3, x_max - 10, y_max - (y_max/3 + 1), 5);
-  box(choice_win, 0, 0);
-  refresh();
-  wrefresh(choice_win);
-  
-  string text = "Although C and C++ have different name mangling, which can be a source of bugs and incompatibilities, in most cases it's fine to use C headers in C++. However, if you want to be absolutely sure that nothing goes wrong, #include the C header inside an extern C block";
-  type_text(text_win, text);
-  
-  // input is arrow keys
-  keypad(choice_win, true);
+string * json_to_str_list (json j) {
 
-  int num_choices = 3;
-  string choices[num_choices] = {"Walk left", "Walk right", "Sit down"};
-  int choice;
-  int highlight = 0;
+	string * final_list = new string[j.size()];
 
-  while(1) {
-	  for(int i = 0; i < num_choices; i++) {
-		  if (i == highlight) {
-		  	wattron(choice_win, A_STANDOUT);
-		  }
-		  mvwprintw(choice_win, i+1, 1, choices[i].c_str());
-		  wattroff(choice_win, A_STANDOUT);
-	  }
-	  choice = wgetch(choice_win);
+	int i = 0;
+	for (auto &item : j) {
+		*(final_list + i) = item.get<string>();
+	}
 
-	  switch(choice) {
-	  	case KEY_UP:
-			if (highlight > 0)
-				highlight--;
-			break;
-		case KEY_DOWN:
-			if (highlight < num_choices - 1)
-				highlight++;
-			break;
-		default:
-			break;
-	  }
-
-	  if (choice == 10) {
-	  	break;
-	  }
-  }
-
-  // Make sure ncurses waits and exits
-  getch();
-  endwin();
-
-
-  return 0;
-
-}
+};

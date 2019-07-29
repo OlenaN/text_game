@@ -70,3 +70,22 @@ From behind your eyelids, you can see a faint neon glow. Concentrating, you mana
 
 
 
+*****
+
+- The only way to win is to be a bad person
+- ie. become part of the establishment, you can win a lot of power and influence by befriending a person who got rich by exploiting the working class
+- if you dont, you dont have that much influence
+- however, if you befriend this person, you will lose a friendship with a good person
+- You can also be a thorn in the side of the establishment from day one
+- this way
+- those in the establishment wear really nice suits, but these suits are made of the skin of the working class
+
+In 3 months the establishment will execute every member of the working class. You hear about this through a secure channel so you know its true. not everyone knows it.
+
+- you can raise awareness (this leads to you being killed)
+- you can stop depending on the establishment (you leave the city, everyone gets executed)
+- you dont make enough decisive choices (you get executed as part of the working class)
+- you can become a powerful member of the establishment (you can let the establishment execute everyone or once you are powerful enough, you use your money to invest in the lower class)
+
+
+

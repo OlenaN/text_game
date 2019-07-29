@@ -1,0 +1,20 @@
+{
+    "statelist" : [
+        {
+            "state" : 1,
+            "type" : "NAME",
+            "is_request" : true,
+            "text" : "What is your name?",
+            "request" : "Enter Name:",
+            "next_states" : [2]
+        },
+        {
+            "state" : 2,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "Are you happy?",
+            "choices" : ["Yes", "No", "I dont know"],
+            "next_states" : [1, 1, 2]
+        }
+    ]
+}
