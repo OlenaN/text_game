@@ -22,6 +22,7 @@ class State {
     public:
 
     int create (string type, string text, string request, int num_choices, string * choices, int * next_states, bool is_request);
+    string get_type(void);
     string get_text(void);
     string get_request(void);
     string * get_choices(void);

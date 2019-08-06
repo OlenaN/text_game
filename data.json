@@ -1,20 +1,132 @@
 {
     "statelist" : [
         {
+            "state" : 0,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "An entity is drifting through nothingness.",
+            "choices" : ["Enter name"],
+            "next_states" : [1]
+        },
+        {
             "state" : 1,
-            "type" : "NAME",
-            "is_request" : true,
-            "text" : "What is your name?",
-            "request" : "Enter Name:",
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "There doesn't seem to be any purpose for a dimentionless entity to have a name.",
+            "choices" : ["Enter name"],
             "next_states" : [2]
         },
         {
             "state" : 2,
             "type" : "CHOICE",
             "is_request" : false,
-            "text" : "Are you happy?",
-            "choices" : ["Yes", "No", "I dont know"],
-            "next_states" : [1, 1, 2]
+            "text" : "As untethered from reality and any frame of reference as this entity is, maybe even it deserves an identifier.",
+            "choices" : ["Enter name"],
+            "next_states" : [3]
+        },
+        {
+            "state" : 3,
+            "type" : "NAME",
+            "is_request" : true,
+            "text" : "Type a name for this entity",
+            "request" : "Enter Name:",
+            "next_states" : [4]
+        },
+        {
+            "state" : 4,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "The entity has a name.",
+            "choices" : ["Continue"],
+            "next_states" : [5]
+        },
+        {
+            "state" : 5,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "Your name is _NAME_ and you suddenly have an identity. You have been nothing for forever, and now you are something. Around you, things are beginning to materialize.",
+            "choices" : ["Move closer"],
+            "next_states" : [6]
+        },
+        {
+            "state" : 6,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "You fight, as if against a current, for a tether to the material plane. It appears you have a choice.",
+            "choices" : ["stop fighting", "keep fighting"],
+            "next_states" : [0, 7]
+        },
+        {
+            "state" : 7,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "You begin to notice a feeling. ",
+            "choices" : ["Move closer"],
+            "next_states" : [8]
+        },
+        {
+            "state" : 8,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "In comparison to nothingness, this feels bizarre. It is the feeling of taking up space. Welcome to the 3rd dimention.",
+            "choices" : ["Enter the 4th dimention"],
+            "next_states" : [9]
+        },
+        {
+            "state" : 9,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "You realize that you may have already been experiencing the 4th dimention. Perhaps your path is not as simple as you thought.",
+            "choices" : ["Explore the dimention in which you exist"],
+            "next_states" : [10]
+        },
+        {
+            "state" : 10,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "Parsing the world is fairly intuitive. You understand things by the distance they are from the seat of your conciousness. You have control over parts of the world.",
+            "choices" : ["Control what you can"],
+            "next_states" : [11]
+        },
+        {
+            "state" : 11,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "What would you like to control?",
+            "choices" : ["Wiggle fingers", "Wiggle toes", "Breath deeply", "Open your eyes"],
+            "next_states" : [12, 13, 14, 15]
+        },
+        {
+            "state" : 12,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "Your fingers move. The air is cold. You're lying on a cold metal surface. The surface is ridged.",
+            "choices" : ["Oh."],
+            "next_states" : [11]
+        },
+        {
+            "state" : 13,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "Theres not much space to wiggle your toes. It seems youre wearing boots.",
+            "choices" : ["Ok."],
+            "next_states" : [11]
+        },
+        {
+            "state" : 14,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "It feels good to fill your lungs to their maximum capacity. You notice the air is almost salty, as if you're next to the ocean.",
+            "choices" : ["Sure."],
+            "next_states" : [11]
+        },
+        {
+            "state" : 15,
+            "type" : "CHOICE",
+            "is_request" : false,
+            "text" : "From behind your eyelids, you can see a faint neon glow. You open your eyes and look around. You're lying on a bench near a bus stop. ",
+            "choices" : ["Nice :)"],
+            "next_states" : [0]
         }
     ]
 }

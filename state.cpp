@@ -18,6 +18,10 @@ int State::create(string type_val, string text_val, string request_val, int num_
     return 0;
 }
 
+string State::get_type(void) {
+    return type;
+}
+
 string State::get_text(void) {
     return text;
 }
@@ -35,8 +39,7 @@ int State::get_num_choices(void) {
 }
 
 int State::get_next_state(int index) {
-    //std::cout << next_states;
-    return *(next_states);
+    return *(next_states + index);
 }
 
 bool State::check_if_request() {

@@ -3,46 +3,64 @@
 #include <iostream>
 #include <unistd.h>
 #include <fstream>
+#include <regex>
 #include "state.h"
 #include "screen.h"
+#include "player.h"
 #include "json.hpp"
 #include "main.h"
 using namespace std;
 using json = nlohmann::json;
 
 
+State * statelist;
 
 int main () {
 
-	/**State state;
+	State state;
 	Screen screen;
+	Player player;
 
 	screen.initialize();
 	screen.create_text_window();
 	screen.create_choice_window();
 
-	screen_loop(screen, state);
 
-	json j2 = 1;*/
-
+	json j2 = 1;
+	
 	fill_states();
+
+	State start_state = *(statelist);
+
+	screen_loop(screen, start_state, player);
 
 	return 0;
 
 
 };
 
-int screen_loop (Screen screen, State state) {
+int screen_loop (Screen screen, State state, Player player) {
 
 	while (1) {
 
-		screen.update_text(state.get_text());
+		screen.update_text(replace_name(state.get_text(), player.get_name()));
+		
+		int next_state_num;
 		
 		if (state.check_if_request()) {
-			screen.request_data(state.get_request());
+			string data = screen.request_data(state.get_request());
+			next_state_num = state.get_next_state(0);
+
+			if (state.get_type() == "NAME") {
+				player.add_name(data);
+			}
+
 		} else {
-			screen.update_choices(state.get_num_choices(), state.get_choices());
+			int choice = screen.update_choices(state.get_num_choices(), state.get_choices());
+			next_state_num = state.get_next_state(choice);
 		}
+
+		state = *(statelist + next_state_num);
 
 	}
 
@@ -55,7 +73,7 @@ void fill_states(void) {
 	json j = json::parse(ifs);	
 	ifs.close();
 
-	State * statelist = new State[j["statelist"].size() + 1];
+	statelist = new State[j["statelist"].size() + 1];
 
 	for (int x = 0; x < j["statelist"].size(); x++) {
 
@@ -73,7 +91,7 @@ void fill_states(void) {
 		string * choices = NULL;
 
 		if (is_request == true) {
-			string request = item["request"];
+			request = item["request"];
 		} else {
 			choices = json_to_str_list(item["choices"]);
 			num_choices = item["choices"].size();
@@ -83,10 +101,7 @@ void fill_states(void) {
 
 		state.create(type, text, request, num_choices, choices, next_states, is_request);
 
-		int value = state.get_next_state(0);
-		if (value) {
-			//std::cout << *(value) << "\n";
-		}
+		*(statelist + x) = state;
 	}
 
 	
@@ -101,8 +116,10 @@ int * json_to_int_list (json j) {
 	int i = 0;
 	for (auto &item : j) {
 		*(final_list + i) = item.get<int>();
-		//std::cout << *(final_list + i);
+		i++;
 	}
+
+	return final_list;
 
 };
 
@@ -113,6 +130,13 @@ string * json_to_str_list (json j) {
 	int i = 0;
 	for (auto &item : j) {
 		*(final_list + i) = item.get<string>();
+		i++;
 	}
 
+	return final_list;
 };
+
+
+string replace_name(string text, string name) {
+	return regex_replace(text, regex("_NAME_"), name);
+}

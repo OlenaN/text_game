@@ -19,7 +19,7 @@ int Screen::type_text(WINDOW * window, string text) {
 		string space = " ";
 		if (x > max_x - 20 && !s.compare(space)) {
 			y++;
-			x = 0;
+			x = 1;
 		} else {
 			x++; 		
 			mvwprintw(window, y, x, s.c_str());
@@ -89,7 +89,8 @@ int Screen::update_choices(int num_choices, string * choices) {
 			if (i == highlight) {
 				wattron(choice_win, A_STANDOUT);
 			}
-			mvwprintw(choice_win, i+1, 1, choices[i].c_str());
+			string curr_choice = "> " + *(choices + i);
+			mvwprintw(choice_win, i+1, 1, curr_choice.c_str());
 			wattroff(choice_win, A_STANDOUT);
 		}
 		choice = wgetch(choice_win);
